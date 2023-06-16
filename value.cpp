@@ -20,6 +20,7 @@ enum class ValueType {
     BOOL,
     ARRAY,
     UNSPECIFIED,
+    DOUBLE,
     OBJ,
 };
 
@@ -45,6 +46,12 @@ class Value : public Fragment {
             this->result = new char[value.size() + 1];
             this->result_sz = value.size() + 1; //include "\0"
             memcpy(this->result, value.c_str(), value.size() + 1);
+        }
+        Value(double value) {
+            this->value_type = ValueType::DOUBLE;
+            this->result = new char[sizeof(value)];
+            this->result_sz = sizeof(value);
+            memcpy(this->result, &value, sizeof(value));
         }
         Value(int32_t value){
             this->value_type = ValueType::NUMBER;

@@ -1,1 +1,12 @@
-{"some_value" : 0,"abcd" : "absdff"}
+{
+    "exponent" : 2e9,
+    "exponentf" : 2.9e9,
+    "float" : 2.9,
+    "int" : 2,
+    "abcd" : "absdff",
+    "array" : [1,2,3,4, 2e9],
+    "other_obj" : {
+        "name" : "Walter white",
+        "address" : "Negra Arroyo Lane 308"
+    }
+}

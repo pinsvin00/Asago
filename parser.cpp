@@ -3,17 +3,27 @@
 Value* Parser::read()
 {
     Token initializer = next();
-    if(!check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN))
+    if( !check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) && 
+        !check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
     {
-        std::cout << "Expected {" << std::endl;
+        std::cout << "Expected { or [" << std::endl;
         exit(0);
     }
 
     Value * obj = new Value();
-    obj->mapped_values = new std::map<std::string, Value*>();
-    obj->value_type = ValueType::OBJ;
+    if(initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
+    {
+        obj->mapped_values = new std::map<std::string, Value*>();
+        obj->value_type = ValueType::OBJ;
+    }
+    else
+    {
+        obj->array_values = new std::vector<Value*>();
+        obj->value_type = ValueType::ARRAY;
+    }
 
-    while(true)
+
+    while(initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
     {
         Token identifier = next();
         if(!check_tok(identifier, TOK_TYPE::VALUE, TOK_DET_TYPE::STRING))
@@ -31,17 +41,21 @@ Value* Parser::read()
         Token value = next();
         if(check_tok(value, TOK_TYPE::VALUE))
         {
-            Value * val = new Value(value.tok_val);
+            
             std::string key(identifier.tok_val);
             auto & deref = *obj->mapped_values;
-            deref[key] = val;
+            deref[key] = val(value);
         }
-        else if(check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN))
+        else if(
+            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) ||
+            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN) 
+        )
         {
-            Value * obj = read();
+            tok_ptr--;
+            Value * objo = read();
             std::string key(identifier.tok_val);
             auto & deref = *obj->mapped_values;
-            deref[key] = obj;
+            deref[key] = objo;
         }
 
         Token mod = next();
@@ -59,6 +73,41 @@ Value* Parser::read()
         }
 
     }
+    while (initializer.tok_det_type == ARR_OPEN)
+    {
+        Token value = next();
+        if(check_tok(value, TOK_TYPE::VALUE))
+        {
+            auto & deref = *obj->array_values;
+            deref.push_back(val(value));
+        }
+        else if(
+            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) ||
+            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN) 
+        )
+        {
+            tok_ptr--;
+            Value * objo = read();
+            auto & deref = *obj->array_values;
+            deref.push_back(objo);
+        }
+
+        Token mod = next();
+        if(check_tok(mod, MODIFIER, ARR_CLOSE))
+        {
+            break;
+        }
+        else if(check_tok(mod, MODIFIER, COMMA))
+        {
+            continue;
+        }
+        else {
+            std::cout  << "Expected , or }" << std::endl;
+            exit(0);
+        }
+    }
+
+
     return obj;
 }
 

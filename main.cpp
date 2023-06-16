@@ -6,14 +6,14 @@ int main()
 {
 
     FILE *fp;
-    const char * fname = "test.json";
+    const char * fname = "weather.json";
     fp = fopen(fname,"r");
     yyin = fp;
     yylex();
-
     Parser * parser = new Parser(__toks);
-    Value * val = parser->read();
-
+    Value * obj = parser->read();
+    
+    std::cout << parser->str(obj) << std::endl;
 
     return 0;
 }

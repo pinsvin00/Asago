@@ -61,11 +61,12 @@ TOK_DET_TYPE get_modifier_det_type(const char * val)
 
 %}
 
-DIGIT    [0-9]
+NUMBER    [1-9][0-9]*
+EXPONENT [eE](\+\-)?[1-9]\d*
 STRING   \"([^\\\"]|\\.)*\"
 
 %%
-{DIGIT}+ {
+{NUMBER}+{EXPONENT} {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::INT;
@@ -73,13 +74,32 @@ STRING   \"([^\\\"]|\\.)*\"
     __toks.push_back(tok);
 }
 
-{DIGIT}+"."{DIGIT}* {
+{NUMBER} {
+    Token tok;
+    tok.tok_val = strdup(yytext);
+    tok.tok_det_type = TOK_DET_TYPE::INT;
+    tok.tok_type = TOK_TYPE::VALUE;
+    __toks.push_back(tok);
+}
+
+
+
+{NUMBER}+"."[0-9]* {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::FLOAT;
     tok.tok_type = TOK_TYPE::VALUE;
     __toks.push_back(tok);
 }
+
+{NUMBER}+"."[0-9]*+{EXPONENT} {
+    Token tok;
+    tok.tok_val = strdup(yytext);
+    tok.tok_det_type = TOK_DET_TYPE::FLOAT;
+    tok.tok_type = TOK_TYPE::VALUE;
+    __toks.push_back(tok);
+}
+
 
 {STRING} {
     Token tok;
@@ -109,7 +129,7 @@ STRING   \"([^\\\"]|\\.)*\"
     __toks.push_back(tok);
 }
 
-"{"|"}"|":"|"," {
+"{"|"}"|":"|","|"["|"]" {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_type = TOK_TYPE::MODIFIER;
