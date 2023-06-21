@@ -1,19 +1,17 @@
 #include <vector>
 #include "parser.h"
 #include "values.h"
+#include "http.h"
+#include "ValuePrinter.h"
 
 int main()
 {
+    Parser p;
+    ValuePrinter prntr;
+    Value * v = p.load_from_url("https://jsonplaceholder.typicode.com/todos/20");
+    prntr.printValue(v);
 
-    FILE *fp;
-    const char * fname = "weather.json";
-    fp = fopen(fname,"r");
-    yyin = fp;
-    yylex();
-    Parser * parser = new Parser(__toks);
-    Value * obj = parser->read();
-    
-    std::cout << parser->str(obj) << std::endl;
+    p.release_value(v);
 
     return 0;
 }

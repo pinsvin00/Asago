@@ -61,7 +61,7 @@ TOK_DET_TYPE get_modifier_det_type(const char * val)
 
 %}
 
-NUMBER    [1-9][0-9]*
+NUMBER   [0-9][0-9]*
 EXPONENT [eE](\+\-)?[1-9]\d*
 STRING   \"([^\\\"]|\\.)*\"
 

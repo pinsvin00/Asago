@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD 17)
 # )
 
 set_source_files_properties(lex.yy.c PROPERTIES LANGUAGE CXX )
+set (CMAKE_CXX_FLAGS "-lcurl")
 
 add_executable(
     Asago 
@@ -22,6 +23,15 @@ add_executable(
     parser.cpp
     toks.cpp
     toks.h
+    http.h
+    http.cpp
+    util.cpp
+    util.h
     tok_def.h
+    value.hpp
     value.cpp
+    ValuePrinter.cpp
+    ValuePrinter.h
 )
+
+target_link_libraries(Asago curl)

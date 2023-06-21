@@ -1,32 +1,7 @@
-#include <vector>
-#include <map>
-#include <string>
-#include <stdlib.h>
-#include <cstring>
+#include "value.hpp"
 
-class Fragment {
-public:
-    std::string debug_value;
-};
-
-enum class FragmentType {
-    UNDEF,
-    VALUE
-};
-
-enum class ValueType {
-    NUMBER,
-    STRING,
-    BOOL,
-    ARRAY,
-    UNSPECIFIED,
-    DOUBLE,
-    OBJ,
-};
-
-class Value : public Fragment {
-    public:
-        ~Value() {
+        
+        Value::~Value() {
             if(dispose == true)
             {
                 delete result;
@@ -34,33 +9,33 @@ class Value : public Fragment {
                 delete mapped_values;
             }
         };
-        Value(bool tf) 
+        Value::Value(bool tf) 
         {
             this->value_type = ValueType::BOOL;
             this->result = new char[1];
             this->result_sz = 1;
             this->result[0] = (int)tf;
         }
-        Value(std::string value) {
+        Value::Value(std::string value) {
             this->value_type = ValueType::STRING;
             this->result = new char[value.size() + 1];
             this->result_sz = value.size() + 1; //include "\0"
             memcpy(this->result, value.c_str(), value.size() + 1);
         }
-        Value(double value) {
+        Value::Value(double value) {
             this->value_type = ValueType::DOUBLE;
             this->result = new char[sizeof(value)];
             this->result_sz = sizeof(value);
             memcpy(this->result, &value, sizeof(value));
         }
-        Value(int32_t value){
+        Value::Value(int32_t value){
             this->value_type = ValueType::NUMBER;
             this->result = new char[sizeof(value)];
             this->result_sz = sizeof(value);
             memcpy(this->result, &value, sizeof(value));
 
         }
-        Value(char* arr, size_t sz, ValueType val_type, bool copy=true)
+        Value::Value(char* arr, size_t sz, ValueType val_type, bool copy)
         {
             this->value_type = val_type;
             this->result_sz = sz;
@@ -75,7 +50,7 @@ class Value : public Fragment {
             }
             this->result = arr;
         }
-        Value(Value* val, bool copy=true)
+        Value::Value(Value* val, bool copy)
         {
             this->value_type = val->value_type;
             this->result_sz = val->result_sz;
@@ -122,22 +97,3 @@ class Value : public Fragment {
             }
 
         }
-
-        Value() = default;
-        ValueType value_type = ValueType::UNSPECIFIED;
-
-        //If value is stored in some variable or is in code, it should persist
-        bool dispose = true; 
-        //There are some variables, than can be pre-maturily deleted
-        bool is_mature = true;
-
-
-        size_t result_sz = 0;
-        char* result = nullptr;
-
-        //array value
-        std::vector<Value*> * array_values = nullptr;
-        //todo add better indexing
-        std::map<std::string, Value*> * mapped_values = nullptr;
-
-};

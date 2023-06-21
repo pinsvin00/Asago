@@ -30,9 +30,4 @@ struct Token {
     TOK_DET_TYPE tok_det_type;
 };
 
-
-// TOK_DET_TYPE get_det_type_modifier(const char* str_val) {
-
-// }
-
 #endif
