@@ -475,7 +475,8 @@ of lines other for number of characters */
 #include <cstdlib>
 #include <iostream>
 #include "tok_def.h"
-std::vector<Token> __toks;
+using namespace Asago;
+std::vector<Token> ___toks;
 
 char* substr(const char *src, int m, int n)
 {
@@ -529,8 +530,8 @@ TOK_DET_TYPE get_modifier_det_type(const char * val)
     return TOK_DET_TYPE::UNDEF;
 } 
 
-#line 533 "lex.yy.c"
 #line 534 "lex.yy.c"
+#line 535 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -747,9 +748,9 @@ YY_DECL
 		}
 
 	{
-#line 68 "lexer.lex"
+#line 69 "lexer.lex"
 
-#line 753 "lex.yy.c"
+#line 754 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -808,52 +809,52 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 69 "lexer.lex"
+#line 70 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::INT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 77 "lexer.lex"
+#line 78 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::INT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 87 "lexer.lex"
+#line 88 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::FLOAT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 95 "lexer.lex"
+#line 96 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::FLOAT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 104 "lexer.lex"
+#line 105 "lexer.lex"
 {
     Token tok;
     size_t strl = strlen(yytext);
@@ -861,50 +862,50 @@ YY_RULE_SETUP
     tok.tok_det_type = TOK_DET_TYPE::STRING;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 114 "lexer.lex"
+#line 115 "lexer.lex"
 {
     Token tok;
     tok.tok_val = "null";
     tok.tok_det_type = TOK_DET_TYPE::NIL;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 123 "lexer.lex"
+#line 124 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::BOOL;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 132 "lexer.lex"
+#line 133 "lexer.lex"
 {
     Token tok;
     tok.tok_val = strdup(yytext);
     tok.tok_type = TOK_TYPE::MODIFIER;
     tok.tok_det_type = get_modifier_det_type(tok.tok_val);
-    __toks.push_back(tok); 
+    ___toks.push_back(tok); 
 }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 140 "lexer.lex"
+#line 141 "lexer.lex"
 ECHO;
 	YY_BREAK
-#line 908 "lex.yy.c"
+#line 909 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1909,7 +1910,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 140 "lexer.lex"
+#line 141 "lexer.lex"
 
  
 /*** User code section***/

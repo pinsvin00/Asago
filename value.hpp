@@ -3,8 +3,10 @@
 #include <string>
 #include <stdlib.h>
 #include <cstring>
-#ifndef VALUE_H
-#define VALUE_H
+#ifndef VALUE_ASAGO_H
+#define VALUE_ASAGO_H
+
+namespace Asago {
 class Fragment {
 public:
     std::string debug_value;
@@ -54,5 +56,7 @@ class Value : public Fragment {
         std::map<std::string, Value*> * mapped_values = nullptr;
 
 };
+}
+
 
 #endif

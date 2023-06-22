@@ -13,11 +13,8 @@ set(CMAKE_CXX_STANDARD 17)
 # )
 
 set_source_files_properties(lex.yy.c PROPERTIES LANGUAGE CXX )
-set (CMAKE_CXX_FLAGS "-lcurl")
-
-add_executable(
+add_library(
     Asago 
-    main.cpp
     lex.yy.c
     parser.h
     parser.cpp

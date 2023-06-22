@@ -1,4 +1,5 @@
 #include "parser.h"
+using namespace Asago;
 bool Parser::check_next(TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval)
 {
     if (tok_ptr + 1 < toks.size())
@@ -38,7 +39,7 @@ void Parser::obtain_buffer(char *buffer, size_t sz)
 {
     yy_scan_string(buffer);
     yylex();
-    for (auto &element : __toks)
+    for (auto &element : ___toks)
     {
         toks.push_back(element);
     }
@@ -51,7 +52,7 @@ Value* Parser::load_from_file(std::string path)
     fp = fopen(fname,"r");
     yyin = fp;
     yylex();
-    Parser * parser = new Parser(__toks);
+    Parser * parser = new Parser(___toks);
     Value * obj = parser->read();
     return obj;
 }

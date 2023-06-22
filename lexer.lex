@@ -5,7 +5,8 @@ of lines other for number of characters */
 #include <cstdlib>
 #include <iostream>
 #include "tok_def.h"
-std::vector<Token> __toks;
+using namespace Asago;
+std::vector<Token> ___toks;
 
 char* substr(const char *src, int m, int n)
 {
@@ -71,7 +72,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::INT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 {NUMBER} {
@@ -79,7 +80,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::INT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 
@@ -89,7 +90,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::FLOAT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 {NUMBER}+"."[0-9]*+{EXPONENT} {
@@ -97,7 +98,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_val = strdup(yytext);
     tok.tok_det_type = TOK_DET_TYPE::FLOAT;
     tok.tok_type = TOK_TYPE::VALUE;
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 
@@ -108,7 +109,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_det_type = TOK_DET_TYPE::STRING;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 "null" {
@@ -117,7 +118,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_det_type = TOK_DET_TYPE::NIL;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 "true"|"false" {
@@ -126,7 +127,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_det_type = TOK_DET_TYPE::BOOL;
     tok.tok_type = TOK_TYPE::VALUE;
 
-    __toks.push_back(tok);
+    ___toks.push_back(tok);
 }
 
 "{"|"}"|":"|","|"["|"]" {
@@ -134,7 +135,7 @@ STRING   \"([^\\\"]|\\.)*\"
     tok.tok_val = strdup(yytext);
     tok.tok_type = TOK_TYPE::MODIFIER;
     tok.tok_det_type = get_modifier_det_type(tok.tok_val);
-    __toks.push_back(tok); 
+    ___toks.push_back(tok); 
 }
 
 %%

@@ -4,6 +4,8 @@
 #include <string>
 #include "tok_def.h"
 
+using namespace Asago;
+
 bool check_last_tok(TOK_TYPE type, TOK_DET_TYPE det_type = UNDEF, std::string strval = "");
 
 
@@ -17,6 +19,6 @@ extern YY_BUFFER_STATE yy_scan_string ( const char *str );
 extern YY_BUFFER_STATE yy_scan_buffer(char *, size_t);
 extern void yy_delete_buffer(YY_BUFFER_STATE buffer);
 
-extern std::vector<Token> __toks;
+extern std::vector<Token> ___toks;
 
 #endif

@@ -8,7 +8,9 @@
 #include <string>
 #ifndef REST_H
 #define REST_H
-class REST {
+
+namespace Asago {
+ class REST {
 public:
     std::string url;
     struct MemoryStruct chunk;
@@ -59,5 +61,7 @@ public:
         curl_easy_cleanup(curl_handle);
         free(chunk.memory);
     }
-};
+};   
+}
+
 #endif

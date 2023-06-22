@@ -4,6 +4,7 @@
 #include <iostream>
 #ifndef PRNTR_H
 #define PRNTR_H
+namespace Asago {
 class ValuePrinter {
 public:
     bool prettyPrint = false;
@@ -11,4 +12,6 @@ public:
     void printValue(Value * val);
     ValuePrinter() = default;
 };
+}
+
 #endif

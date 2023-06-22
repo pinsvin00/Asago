@@ -1,4 +1,5 @@
 #include "ValuePrinter.h"
+using namespace Asago;
 
 std::string ValuePrinter::stringifyValue(Value *value)
 {

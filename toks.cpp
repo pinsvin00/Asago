@@ -1,5 +1,5 @@
 #include "toks.h"
-
+using namespace Asago;
 std::vector<Token> toks;
 
 bool check_last_tok(TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval)
