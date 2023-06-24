@@ -5,7 +5,7 @@ std::string ValuePrinter::stringifyValue(Value *value)
 {
     if (value->value_type == ValueType::NUMBER)
     {
-        int32_t b = bytes_to_int(value->result);
+        int32_t b = asago_bytes_to_int(value->result);
         return std::to_string(b);
     }
     else if (value->value_type == ValueType::NIL)
@@ -18,7 +18,7 @@ std::string ValuePrinter::stringifyValue(Value *value)
     }
     else if (value->value_type == ValueType::DOUBLE)
     {
-        double b = bytes_to_double(value->result);
+        double b = asago_bytes_to_double(value->result);
         return std::to_string(b);
     }
     // This is very dangerous line, will cause infinite recursion

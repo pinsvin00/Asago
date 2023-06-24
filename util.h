@@ -13,7 +13,7 @@ struct MemoryStruct {
 };
 
 size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp);
-int32_t bytes_to_int(char* buffer);
-double bytes_to_double(char* buffer);
+int32_t asago_bytes_to_int(char* buffer);
+double asago_bytes_to_double(char* buffer);
 
 #endif

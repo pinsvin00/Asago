@@ -19,7 +19,7 @@ size_t WriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *user
   return realsize;
 }
 
-int32_t bytes_to_int(char *buffer)
+int32_t asago_bytes_to_int(char *buffer)
 {
     int32_t some = 0;
     some |= (unsigned char)buffer[0];
@@ -30,7 +30,7 @@ int32_t bytes_to_int(char *buffer)
     return some;
 }
 
-double bytes_to_double(char *buffer)
+double asago_bytes_to_double(char *buffer)
 {
     double some;
     memcpy(&some, buffer, sizeof(double));
