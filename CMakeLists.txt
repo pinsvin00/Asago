@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD 17)
 #     DEPENDS tok_def.h
 # )
 
+
 set_source_files_properties(lex.yy.c PROPERTIES LANGUAGE CXX )
 add_library(
     Asago 
@@ -25,8 +26,8 @@ add_library(
     util.cpp
     util.h
     tok_def.h
-    value.hpp
-    value.cpp
+    ../value.hpp
+    ../value.cpp
     ValuePrinter.cpp
     ValuePrinter.h
 )

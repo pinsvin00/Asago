@@ -45,7 +45,7 @@ void Parser::obtain_buffer(char *buffer, size_t sz)
     }
 }
 
-Value* Parser::load_from_file(std::string path)
+SEQL::Value* Parser::load_from_file(std::string path)
 {
     FILE *fp;
     const char * fname = path.c_str();
@@ -53,11 +53,11 @@ Value* Parser::load_from_file(std::string path)
     yyin = fp;
     yylex();
     Parser * parser = new Parser(___toks);
-    Value * obj = parser->read();
+    SEQL::Value * obj = parser->read();
     return obj;
 }
 
-Value *Parser::load_from_url(std::string path)
+SEQL::Value *Parser::load_from_url(std::string path)
 {
     REST rest;
     Parser parser;
@@ -67,12 +67,12 @@ Value *Parser::load_from_url(std::string path)
     };
     rest.run();
 
-    Value* obj = parser.read();
+    SEQL::Value* obj = parser.read();
 
     return obj;
 }
 
-Value *Parser::read()
+SEQL::Value *Parser::read()
 {
     Token initializer = next();
     if (!check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) &&
@@ -82,16 +82,16 @@ Value *Parser::read()
         exit(0);
     }
 
-    Value *obj = new Value();
+    SEQL::Value *obj = new SEQL::Value();
     if (initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
     {
-        obj->mapped_values = new std::map<std::string, Value *>();
-        obj->value_type = ValueType::OBJ;
+        obj->mapped_values = new std::map<std::string, SEQL::Value *>();
+        obj->value_type = SEQL::ValueType::OBJ;
     }
     else
     {
-        obj->array_values = new std::vector<Value *>();
-        obj->value_type = ValueType::ARRAY;
+        obj->array_values = new std::vector<SEQL::Value *>();
+        obj->value_type = SEQL::ValueType::ARRAY;
     }
 
     while (initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
@@ -127,7 +127,7 @@ Value *Parser::read()
             check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
         {
             tok_ptr--;
-            Value *objo = read();
+            SEQL::Value *objo = read();
             std::string key(identifier.tok_val);
             auto &deref = *obj->mapped_values;
             deref[key] = objo;
@@ -167,7 +167,7 @@ Value *Parser::read()
             check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
         {
             tok_ptr--;
-            Value *objo = read();
+            SEQL::Value *objo = read();
             auto &deref = *obj->array_values;
             deref.push_back(objo);
         }
@@ -190,7 +190,7 @@ Value *Parser::read()
 
     return obj;
 }
-void Parser::release_value(Value *val)
+void Parser::release_value(SEQL::Value *val)
 {
     delete val->result;
 
@@ -214,28 +214,28 @@ void Parser::release_value(Value *val)
 
 }
 
-Value *Parser::to_value(const Token &value)
+SEQL::Value *Parser::to_value(const Token &value)
 {
-    Value *val = nullptr;
+    SEQL::Value *val = nullptr;
     if (value.tok_det_type == TOK_DET_TYPE::STRING)
     {
-        val = new Value(std::string(value.tok_val));
+        val = new SEQL::Value(std::string(value.tok_val));
     }
     else if (value.tok_det_type == TOK_DET_TYPE::FLOAT)
     {
-        val = new Value(load_number_dobule(value.tok_val));
+        val = new SEQL::Value(load_number_dobule(value.tok_val));
     }
     else if (value.tok_det_type == TOK_DET_TYPE::INT)
     {
-        val = new Value(load_number_int(value.tok_val));
+        val = new SEQL::Value(load_number_int(value.tok_val));
     }
     else if (value.tok_det_type == TOK_DET_TYPE::BOOL)
     {
-        val = new Value(value.tok_val == "true" ? true : false);
+        val = new SEQL::Value(value.tok_val == "true" ? true : false);
     }
     else if (value.tok_det_type == TOK_DET_TYPE::NIL)
     {
-        val = new Value();
+        val = new SEQL::Value();
     }
     if (val == nullptr)
     {

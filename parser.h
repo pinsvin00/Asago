@@ -5,6 +5,7 @@
 #include <functional>
 #include "http.h"
 #include "toks.h"
+#include "../value.hpp"
 #include "value.hpp"
 
 namespace Asago {
@@ -12,11 +13,11 @@ namespace Asago {
     public:
         void obtain_buffer(char * buffer, size_t sz);
 
-        Value* load_from_file(std::string path);
-        Value* load_from_url(std::string path);
+        SEQL::Value* load_from_file(std::string path);
+        SEQL::Value* load_from_url(std::string path);
 
-        Value* read();
-        void release_value(Value * val);
+        SEQL::Value* read();
+        void release_value(SEQL::Value * val);
         Parser(std::vector<Token> toks);
         Parser() = default;
 
@@ -27,7 +28,7 @@ namespace Asago {
         bool check_tok(const Token & tok, TOK_TYPE type, TOK_DET_TYPE det_type = TOK_DET_TYPE::UNDEF, std::string strval = "");
         Token next();
 
-        Value * to_value(const Token & value);
+        SEQL::Value * to_value(const Token & value);
         int load_number_int(std::string num);
         double load_number_dobule(std::string num);
         size_t tok_ptr = 0;

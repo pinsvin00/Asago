@@ -1,28 +1,28 @@
 #include "ValuePrinter.h"
 using namespace Asago;
 
-std::string ValuePrinter::stringifyValue(Value *value)
+std::string ValuePrinter::stringifyValue(SEQL::Value *value)
 {
-    if (value->value_type == ValueType::NUMBER)
+    if (value->value_type == SEQL::ValueType::NUMBER)
     {
         int32_t b = asago_bytes_to_int(value->result);
         return std::to_string(b);
     }
-    else if (value->value_type == ValueType::NIL)
+    else if (value->value_type == SEQL::ValueType::NIL)
     {
         return "null";
     }
-    else if (value->value_type == ValueType::STRING)
+    else if (value->value_type == SEQL::ValueType::STRING)
     {
         return "\"" + std::string(value->result) + "\"";
     }
-    else if (value->value_type == ValueType::DOUBLE)
+    else if (value->value_type == SEQL::ValueType::DOUBLE)
     {
         double b = asago_bytes_to_double(value->result);
         return std::to_string(b);
     }
     // This is very dangerous line, will cause infinite recursion
-    else if (value->value_type == ValueType::ARRAY)
+    else if (value->value_type == SEQL::ValueType::ARRAY)
     {
         std::string buffer = "[";
         auto deref = value->array_values;
@@ -41,7 +41,7 @@ std::string ValuePrinter::stringifyValue(Value *value)
 
         return buffer;
     }
-    else if (value->value_type == ValueType::OBJ)
+    else if (value->value_type == SEQL::ValueType::OBJ)
     {
         std::string buffer = "{";
         auto &deref = *value->mapped_values;
@@ -58,7 +58,7 @@ std::string ValuePrinter::stringifyValue(Value *value)
 
         return buffer;
     }
-    else if (value->value_type == ValueType::BOOL)
+    else if (value->value_type == SEQL::ValueType::BOOL)
     {
         char st = value->result[0];
         std::string value = st == 1 ? "true" : "false";
@@ -67,7 +67,7 @@ std::string ValuePrinter::stringifyValue(Value *value)
     return "";
 }
 
-void ValuePrinter::printValue(Value *val)
+void ValuePrinter::printValue(SEQL::Value *val)
 {
     std::cout << this->stringifyValue(val) << std::endl;
 }
