@@ -6,7 +6,7 @@
 
 using namespace Asago;
 
-bool check_last_tok(TOK_TYPE type, TOK_DET_TYPE det_type = UNDEF, std::string strval = "");
+bool check_last_tok(ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type = ASAGO_UNDEF, std::string strval = "");
 
 
 

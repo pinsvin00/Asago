@@ -31,6 +31,15 @@ enum class ValueType {
 class Value : public Fragment {
     public:
         ~Value();
+        // Value accessors
+        std::string asString() const;
+        int32_t asInt() const;
+        double asDouble() const;
+        bool asBool() const;
+
+        // Access by array index / object key
+        Value* get_arr(int idx);
+        Value* get_obj(const std::string &key);
         Value(bool tf) ;
         Value(std::string value);
         Value(double value);

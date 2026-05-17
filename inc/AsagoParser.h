@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-#define PARSER_H
+#ifndef ASAGOPARSER_H
+#define ASAGOPARSER_H
 #include <vector>
 #include <iostream>
 #include <functional>
@@ -20,9 +20,9 @@ namespace Asago {
 
     private:
         std::vector<Token> toks;
-        bool check_next(TOK_TYPE type, TOK_DET_TYPE det_type = TOK_DET_TYPE::UNDEF, std::string strval = "");
-        bool check_last(TOK_TYPE type, TOK_DET_TYPE det_type = TOK_DET_TYPE::UNDEF, std::string strval = "");
-        bool check_tok(const Token & tok, TOK_TYPE type, TOK_DET_TYPE det_type = TOK_DET_TYPE::UNDEF, std::string strval = "");
+        bool check_next(ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type = ASAGO_UNDEF, std::string strval = "");
+        bool check_last(ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type = ASAGO_UNDEF, std::string strval = "");
+        bool check_tok(const Token & tok, ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type = ASAGO_UNDEF, std::string strval = "");
         Token next();
 
         Value * to_value(const Token & value);

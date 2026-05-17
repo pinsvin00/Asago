@@ -1,6 +1,6 @@
-#include "parser.h"
+#include "AsagoParser.h"
 using namespace Asago;
-bool Parser::check_next(TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval)
+bool Parser::check_next(ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type, std::string strval)
 {
     if (tok_ptr + 1 < toks.size())
     {
@@ -8,7 +8,7 @@ bool Parser::check_next(TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval
     }
     return false;
 }
-bool Parser::check_last(TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval)
+bool Parser::check_last(ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type, std::string strval)
 {
     if (tok_ptr != 0)
     {
@@ -22,7 +22,7 @@ double Parser::load_number_dobule(std::string num)
 }
 int Parser::load_number_int(std::string num)
 {
-    return (int)std::stod(num);
+    return std::stoi(num);
 }
 Token Parser::next()
 {
@@ -60,56 +60,56 @@ Value* Parser::load_from_file(std::string path)
 Value *Parser::read()
 {
     Token initializer = next();
-    if (!check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) &&
-        !check_tok(initializer, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
+    if (!check_tok(initializer, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_BRACKET_OPEN) &&
+        !check_tok(initializer, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_ARR_OPEN))
     {
         std::cout << "Expected { or [" << std::endl;
         exit(0);
     }
 
     Value *obj = new Value();
-    if (initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
+    if (initializer.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_BRACKET_OPEN)
     {
         obj->mapped_values = new std::map<std::string, Value *>();
         obj->value_type = ValueType::OBJ;
     }
     else
     {
-        obj->array_values = new std::vector<Value *>();
+        obj->array_values = new std::vector<Value*>();
         obj->value_type = ValueType::ARRAY;
     }
 
-    while (initializer.tok_det_type == TOK_DET_TYPE::BRACKET_OPEN)
+    while (initializer.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_BRACKET_OPEN)
     {
         Token identifier = next();
 
-        if (check_tok(identifier, MODIFIER, BRACKET_CLOSE))
+        if (check_tok(identifier, ASAGO_MODIFIER, ASAGO_BRACKET_CLOSE))
         {
             return obj;
         }
 
-        if (!check_tok(identifier, TOK_TYPE::VALUE, TOK_DET_TYPE::STRING))
+        if (!check_tok(identifier, ASAGO_TOK_TYPE::ASAGO_VALUE, ASAGO_TOK_DET_TYPE::ASAGO_STRING))
         {
-            std::cout << "Expected string value" << std::endl;
+            std::cout << "Expected ASAGO_STRING ASAGO_VALUE" << std::endl;
             exit(0);
         }
-        Token colon = next();
-        if (!check_tok(colon, TOK_TYPE::MODIFIER, TOK_DET_TYPE::COLON))
+        Token ASAGO_COLON = next();
+        if (!check_tok(ASAGO_COLON, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_COLON))
         {
             std::cout << "Expected \":\" token" << std::endl;
         }
 
-        Token value = next();
-        if (check_tok(value, TOK_TYPE::VALUE))
+        Token ASAGO_VALUE = next();
+        if (check_tok(ASAGO_VALUE, ASAGO_TOK_TYPE::ASAGO_VALUE))
         {
 
             std::string key(identifier.tok_val);
             auto &deref = *obj->mapped_values;
-            deref[key] = to_value(value);
+            deref[key] = to_value(ASAGO_VALUE);
         }
         else if (
-            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) ||
-            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
+            check_tok(ASAGO_VALUE, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_BRACKET_OPEN) ||
+            check_tok(ASAGO_VALUE, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_ARR_OPEN))
         {
             tok_ptr--;
             Value *objo = read();
@@ -119,11 +119,11 @@ Value *Parser::read()
         }
 
         Token mod = next();
-        if (check_tok(mod, MODIFIER, BRACKET_CLOSE))
+        if (check_tok(mod, ASAGO_MODIFIER, ASAGO_BRACKET_CLOSE))
         {
             break;
         }
-        else if (check_tok(mod, MODIFIER, COMMA))
+        else if (check_tok(mod, ASAGO_MODIFIER, ASAGO_COMMA))
         {
             continue;
         }
@@ -133,23 +133,23 @@ Value *Parser::read()
             exit(0);
         }
     }
-    while (initializer.tok_det_type == ARR_OPEN)
+    while (initializer.tok_det_type == ASAGO_ARR_OPEN)
     {
-        Token value = next();
+        Token asago_value = next();
 
-        if (check_tok(value, MODIFIER, ARR_CLOSE))
+        if (check_tok(asago_value, ASAGO_MODIFIER, ASAGO_ARR_CLOSE))
         {
             return obj;
         }
 
-        if (check_tok(value, TOK_TYPE::VALUE))
+        if (check_tok(asago_value, ASAGO_TOK_TYPE::ASAGO_VALUE))
         {
             auto &deref = *obj->array_values;
-            deref.push_back(to_value(value));
+            deref.push_back(to_value(asago_value));
         }
         else if (
-            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::BRACKET_OPEN) ||
-            check_tok(value, TOK_TYPE::MODIFIER, TOK_DET_TYPE::ARR_OPEN))
+            check_tok(asago_value, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_BRACKET_OPEN) ||
+            check_tok(asago_value, ASAGO_TOK_TYPE::ASAGO_MODIFIER, ASAGO_TOK_DET_TYPE::ASAGO_ARR_OPEN))
         {
             tok_ptr--;
             Value *objo = read();
@@ -158,11 +158,11 @@ Value *Parser::read()
         }
 
         Token mod = next();
-        if (check_tok(mod, MODIFIER, ARR_CLOSE))
+        if (check_tok(mod, ASAGO_MODIFIER, ASAGO_ARR_CLOSE))
         {
             break;
         }
-        else if (check_tok(mod, MODIFIER, COMMA))
+        else if (check_tok(mod, ASAGO_MODIFIER, ASAGO_COMMA))
         {
             continue;
         }
@@ -199,32 +199,32 @@ void Parser::release_value(Value *val)
 
 }
 
-Value *Parser::to_value(const Token &value)
+Value *Parser::to_value(const Token &asago_value)
 {
     Value *val = nullptr;
-    if (value.tok_det_type == TOK_DET_TYPE::STRING)
+    if (asago_value.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_STRING)
     {
-        val = new Value(std::string(value.tok_val));
+        val = new Value(std::string(asago_value.tok_val));
     }
-    else if (value.tok_det_type == TOK_DET_TYPE::FLOAT)
+    else if (asago_value.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_FLOAT)
     {
-        val = new Value(load_number_dobule(value.tok_val));
+        val = new Value(load_number_dobule(asago_value.tok_val));
     }
-    else if (value.tok_det_type == TOK_DET_TYPE::INT)
+    else if (asago_value.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_INT)
     {
-        val = new Value(load_number_int(value.tok_val));
+        val = new Value(load_number_int(asago_value.tok_val));
     }
-    else if (value.tok_det_type == TOK_DET_TYPE::BOOL)
+    else if (asago_value.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_BOOL)
     {
-        val = new Value(value.tok_val == "true" ? true : false);
+        val = new Value(asago_value.tok_val == "true" ? true : false);
     }
-    else if (value.tok_det_type == TOK_DET_TYPE::NIL)
+    else if (asago_value.tok_det_type == ASAGO_TOK_DET_TYPE::ASAGO_NIL)
     {
         val = new Value();
     }
     if (val == nullptr)
     {
-        std::cout << "Invalid value" << value.tok_val << std::endl;
+        std::cout << "Invalid ASAGO_VALUE" << asago_value.tok_val << std::endl;
         exit(0);
     }
     return val;
@@ -234,11 +234,11 @@ Value *Parser::to_value(const Token &value)
         this->toks = toks;
     };
 
-bool Parser::check_tok(const Token &tok, TOK_TYPE type, TOK_DET_TYPE det_type, std::string strval)
+bool Parser::check_tok(const Token &tok, ASAGO_TOK_TYPE type, ASAGO_TOK_DET_TYPE det_type, std::string strval)
 {
     bool res = true;
 
-    if (det_type != UNDEF && det_type != tok.tok_det_type)
+    if (det_type != ASAGO_UNDEF && det_type != tok.tok_det_type)
     {
         res = false;
     }
